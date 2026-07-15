@@ -1,0 +1,1951 @@
+
+:root{
+
+  --bg:#060816;
+  --surface:#111827;
+  --surface-light:#1A2335;
+  --card:rgba(17,24,39,.82);
+
+  --primary:#7C5CFF;
+  --primary-hover:#6848F4;
+
+  --secondary:#3B82F6;
+
+  --text:#F8FAFC;
+  --muted:#94A3B8;
+
+  --border:rgba(255,255,255,.08);
+
+  --success:#22C55E;
+  --warning:#F59E0B;
+  --danger:#EF4444;
+
+  --radius:16px;
+
+  --shadow:
+          0 18px 48px rgba(0,0,0,.38);
+
+  --transition:.28s ease;
+
+  --blur:22px;
+
+  --font:
+          Inter,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+
+}
+
+/* ==========================================================
+   Root Panel
+========================================================== */
+
+.ews-root{
+
+  position:fixed;
+  right:24px;
+  bottom:24px;
+
+  width:min(380px,calc(100vw - 28px));
+
+  max-height:90vh;
+
+  overflow-y:auto;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:12px;
+
+  padding:16px;
+
+  border-radius:16px;
+
+  background:var(--card);
+
+  border:1px solid var(--border);
+
+  backdrop-filter:blur(var(--blur));
+
+  box-shadow:var(--shadow);
+
+  z-index: 2147483647;
+
+  color:var(--text);
+
+  font-family:var(--font);
+
+  opacity:0;
+
+  transform:translateY(18px) scale(.97);
+
+  transition:
+
+          opacity .25s,
+
+          transform .25s;
+
+}
+
+/* ==========================================================
+   Entry Animation
+========================================================== */
+
+@keyframes igris-enter{
+
+  from{
+
+    opacity:0;
+
+    transform:
+            translateY(18px)
+            scale(.96);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+            translateY(0)
+            scale(1);
+
+  }
+
+}
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.ews-header{
+
+  position:relative;
+
+  display:flex;
+
+  align-items:flex-start;
+
+  gap:12px;
+
+  padding-bottom:10px;
+
+  border-bottom:1px solid var(--border);
+
+}
+.ews-logo{
+
+  width:40px;
+
+  height:40px;
+
+  border-radius:12px;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  font-size:20px;
+
+  background:
+          linear-gradient(
+                  135deg,
+                  var(--primary),
+                  var(--secondary)
+          );
+
+  box-shadow:
+          0 10px 35px rgba(124,92,255,.45);
+
+}
+
+.ews-title-group{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:4px;
+
+}
+
+.ews-title-group h2{
+
+  margin:0;
+
+  font-size:17px;
+
+  font-weight:700;
+
+  letter-spacing:.4px;
+
+  color:var(--text);
+
+}
+
+.ews-title-group p{
+
+  margin:0;
+
+  color:var(--muted);
+
+  font-size:12px;
+
+}
+
+/* ==========================================================
+   Generic Sections
+========================================================== */
+
+.ews-section{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:7px;
+  position:relative;
+  z-index:0;
+  overflow:visible;
+
+}
+
+.ews-label{
+
+  font-size:13px;
+
+  font-weight:600;
+
+  color:var(--muted);
+
+  letter-spacing:.3px;
+
+}
+
+/* ==========================================================
+   Action Menu
+========================================================== */
+
+.ews-action-menu{
+
+  width:100%;
+
+  min-height:48px;
+
+  padding:0 16px;
+
+  border-radius:16px;
+
+  border:1px solid var(--border);
+
+  background:rgba(255,255,255,.04);
+
+  color:var(--text);
+
+  font-size:14px;
+
+  outline:none;
+
+  transition:var(--transition);
+
+  appearance:none;
+
+  cursor:pointer;
+
+}
+
+.ews-action-menu:hover{
+
+  border-color:var(--primary);
+
+}
+
+.ews-action-menu:focus{
+
+  border-color:var(--primary);
+
+  box-shadow:
+          0 0 0 4px rgba(124,92,255,.15);
+
+}
+
+/* ==========================================================
+   Tone Selector
+========================================================== */
+
+.ews-tone-selector{
+
+  width:100%;
+
+  min-height:48px;
+
+  padding:0 16px;
+
+  border-radius:16px;
+
+  border:1px solid var(--border);
+
+  background:rgba(255,255,255,.04);
+
+  color:var(--text);
+
+  outline:none;
+
+  transition:var(--transition);
+
+  appearance:none;
+
+  cursor:pointer;
+
+}
+
+.ews-tone-selector:hover{
+
+  border-color:var(--secondary);
+
+}
+
+.ews-tone-selector:focus{
+
+  border-color:var(--secondary);
+
+  box-shadow:
+          0 0 0 4px rgba(59,130,246,.15);
+
+}
+
+/* ==========================================================
+   Textarea
+========================================================== */
+
+.ews-instruction{
+
+  width:100%;
+
+  min-height:78px;
+
+  resize:vertical;
+
+  padding:10px 12px;
+
+  border-radius:12px;
+
+  border:1px solid var(--border);
+
+  background:rgba(255,255,255,.04);
+
+  color:var(--text);
+
+  font-family:inherit;
+
+  font-size:13px;
+
+  line-height:1.45;
+
+  outline:none;
+
+  transition:var(--transition);
+
+}
+
+.ews-instruction::placeholder{
+
+  color:var(--muted);
+
+  line-height:1.45;
+
+}
+
+.ews-instruction:hover{
+
+  border-color:rgba(124,92,255,.45);
+
+}
+
+.ews-instruction:focus{
+
+  border-color:var(--primary);
+
+  box-shadow:
+          0 0 0 4px rgba(124,92,255,.15);
+
+}
+
+/* ==========================================================
+   Select Options
+========================================================== */
+
+.ews-action-menu option,
+.ews-tone-selector option{
+
+  background:#111827;
+
+  color:white;
+
+}
+
+/* ==========================================================
+   Divider
+========================================================== */
+
+.ews-divider{
+
+  height:1px;
+
+  background:var(--border);
+
+  margin:4px 0;
+
+}
+
+/* ==========================================================
+   Small Description Text
+========================================================== */
+
+.ews-helper{
+
+  font-size:12px;
+
+  color:var(--muted);
+
+  line-height:1.6;
+
+}
+
+/* ==========================================================
+   Primary Button
+========================================================== */
+
+.ews-primary-button{
+
+  width:100%;
+
+  height:44px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:
+          linear-gradient(
+                  135deg,
+                  var(--primary),
+                  var(--secondary)
+          );
+
+  color:white;
+
+  font-size:14px;
+
+  font-weight:700;
+
+  letter-spacing:.3px;
+
+  cursor:pointer;
+
+  transition:all .28s ease;
+
+  box-shadow:
+          0 12px 30px rgba(124,92,255,.35);
+
+}
+
+.ews-primary-button:hover{
+
+  transform:
+          translateY(-2px);
+
+  box-shadow:
+          0 18px 40px rgba(124,92,255,.45);
+
+}
+
+.ews-primary-button:active{
+
+  transform:scale(.98);
+
+}
+
+.ews-primary-button:focus{
+
+  outline:none;
+
+  box-shadow:
+          0 0 0 4px rgba(124,92,255,.18),
+          0 18px 40px rgba(124,92,255,.45);
+
+}
+
+/* ==========================================================
+   Disabled Button
+========================================================== */
+
+.ews-primary-button:disabled{
+
+  cursor:not-allowed;
+
+  opacity:.75;
+
+  transform:none;
+
+  filter:grayscale(.2);
+
+}
+
+/* ==========================================================
+   Loading State
+========================================================== */
+
+.ews-loading{
+
+  pointer-events:none;
+
+}
+
+.ews-loading .ews-primary-button{
+
+  position:relative;
+
+  overflow:hidden;
+
+}
+
+.ews-loading .ews-primary-button::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+          linear-gradient(
+                  90deg,
+                  transparent,
+                  rgba(255,255,255,.18),
+                  transparent
+          );
+
+  animation:igris-loading 1.2s linear infinite;
+
+}
+
+@keyframes igris-loading{
+
+  from{
+
+    transform:translateX(-100%);
+
+  }
+
+  to{
+
+    transform:translateX(100%);
+
+  }
+
+}
+
+/* ==========================================================
+   Error Card
+========================================================== */
+
+.ews-error{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  padding:14px 16px;
+
+  border-radius:16px;
+
+  background:
+          rgba(239,68,68,.12);
+
+  border:1px solid
+  rgba(239,68,68,.28);
+
+  color:#fecaca;
+
+  font-size:13px;
+
+  line-height:1.6;
+
+  animation:igris-error .25s ease;
+
+}
+
+@keyframes igris-error{
+
+  from{
+
+    opacity:0;
+
+    transform:
+            translateY(-8px);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+            translateY(0);
+
+  }
+
+}
+
+/* ==========================================================
+   Success Card (Future Use)
+========================================================== */
+
+.ews-success{
+
+  padding:14px 16px;
+
+  border-radius:16px;
+
+  background:
+          rgba(34,197,94,.12);
+
+  border:1px solid
+  rgba(34,197,94,.28);
+
+  color:#bbf7d0;
+
+}
+
+/* ==========================================================
+   Small Utility Classes
+========================================================== */
+
+.ews-hidden{
+
+  display:none !important;
+
+}
+
+.ews-grow{
+
+  flex:1;
+
+}
+
+/* ==========================================================
+   Preview Panel
+========================================================== */
+
+.ews-preview-panel{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:12px;
+
+  padding:14px;
+
+  border-radius:14px;
+
+  background:rgba(255,255,255,.04);
+
+  border:1px solid var(--border);
+
+  animation:igris-preview .35s ease;
+
+}
+
+@keyframes igris-preview{
+
+  from{
+
+    opacity:0;
+
+    transform:
+            translateY(12px);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+            translateY(0);
+
+  }
+
+}
+
+/* ==========================================================
+   Preview Header
+========================================================== */
+
+.ews-preview-header{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:12px;
+
+  padding-bottom:10px;
+
+  border-bottom:1px solid var(--border);
+
+}
+
+.ews-preview-header strong{
+
+  font-size:17px;
+
+  font-weight:700;
+
+  color:var(--text);
+
+}
+
+/* ==========================================================
+   Close Button
+========================================================== */
+
+.ews-icon-button{
+
+  width:38px;
+
+  height:38px;
+
+  border:none;
+
+  border-radius:50%;
+
+  background:rgba(255,255,255,.06);
+
+  color:var(--muted);
+
+  cursor:pointer;
+
+  transition:all .25s ease;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+}
+
+.ews-icon-button:hover{
+
+  background:rgba(239,68,68,.18);
+
+  color:#ffffff;
+
+  transform:rotate(90deg);
+
+}
+
+/* ==========================================================
+   Subject Card
+========================================================== */
+
+.ews-preview-subject{
+
+  padding:10px 12px;
+
+  border-radius:12px;
+
+  background:rgba(124,92,255,.10);
+
+  border-left:4px solid var(--primary);
+
+  color:#ffffff;
+
+  font-weight:600;
+
+  line-height:1.6;
+
+  word-break:break-word;
+
+}
+
+/* ==========================================================
+   Response Body
+========================================================== */
+
+.ews-preview-body{
+
+  max-height:220px;
+
+  overflow:auto;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:rgba(255,255,255,.03);
+
+  border:1px solid rgba(255,255,255,.06);
+
+  color:var(--text);
+
+  white-space:pre-wrap;
+
+  word-break:break-word;
+
+  font-family:inherit;
+
+  font-size:13px;
+
+  line-height:1.55;
+
+}
+
+/* ==========================================================
+   Warning Card
+========================================================== */
+
+.ews-preview-warnings{
+
+  padding:14px;
+
+  border-radius:16px;
+
+  background:rgba(245,158,11,.12);
+
+  border-left:4px solid var(--warning);
+
+  color:#fde68a;
+
+  font-size:13px;
+
+  line-height:1.6;
+
+}
+
+/* ==========================================================
+   Preview Actions
+========================================================== */
+
+.ews-preview-actions{
+
+  display:flex;
+
+  gap:6px;
+
+  justify-content:flex-end;
+
+  flex-wrap:wrap;
+
+}
+
+/* ==========================================================
+   Secondary Buttons
+========================================================== */
+
+.ews-preview-actions button{
+
+  width:auto;
+
+  min-width:92px;
+
+  height:36px;
+
+  padding:0 12px;
+
+  border-radius:11px;
+
+  background:rgba(255,255,255,.06);
+
+  color:var(--text);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  box-shadow:none;
+
+}
+
+.ews-preview-actions button:hover{
+
+  background:rgba(124,92,255,.18);
+
+  border-color:var(--primary);
+
+  transform:translateY(-2px);
+
+}
+
+/* ==========================================================
+   Empty Preview
+========================================================== */
+
+.ews-preview-empty{
+
+  padding:18px;
+
+  text-align:center;
+
+  color:var(--muted);
+
+  border-radius:12px;
+
+  border:2px dashed rgba(255,255,255,.08);
+
+  background:rgba(255,255,255,.02);
+
+}
+
+.ews-preview-empty h3{
+
+  margin:0 0 10px;
+
+  color:var(--text);
+
+}
+
+.ews-preview-empty p{
+
+  margin:0;
+
+  line-height:1.7;
+
+}
+
+/* ==========================================================
+   Custom Scrollbar
+========================================================== */
+
+.ews-preview-body::-webkit-scrollbar,
+.ews-instruction::-webkit-scrollbar{
+
+  width:8px;
+
+}
+
+.ews-preview-body::-webkit-scrollbar-track,
+.ews-instruction::-webkit-scrollbar-track{
+
+  background:transparent;
+
+}
+
+.ews-preview-body::-webkit-scrollbar-thumb,
+.ews-instruction::-webkit-scrollbar-thumb{
+
+  background:rgba(124,92,255,.45);
+
+  border-radius:20px;
+
+}
+
+.ews-preview-body::-webkit-scrollbar-thumb:hover,
+.ews-instruction::-webkit-scrollbar-thumb:hover{
+
+  background:rgba(124,92,255,.7);
+
+}
+
+/* ==========================================================
+   Selection
+========================================================== */
+
+::selection{
+
+  background:rgba(124,92,255,.35);
+
+  color:#fff;
+
+}
+
+/* ==========================================================
+   Hover Effects
+========================================================== */
+
+.ews-root>*{
+
+  transition:all .28s ease;
+
+}
+
+.ews-section:hover{
+
+  transform:translateY(-1px);
+
+}
+
+/* ==========================================================
+   Glass Glow
+========================================================== */
+
+.ews-root::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  pointer-events:none;
+
+  border-radius:inherit;
+
+  background:
+
+          radial-gradient(
+
+                  circle at top right,
+
+                  rgba(124,92,255,.18),
+
+                  transparent 35%
+
+          ),
+
+          radial-gradient(
+
+                  circle at bottom left,
+
+                  rgba(59,130,246,.12),
+
+                  transparent 35%
+
+          );
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media(max-width:768px){
+
+  .ews-root{
+
+    right:16px;
+
+    left:16px;
+
+    bottom:16px;
+
+    width:auto;
+
+    padding:18px;
+
+  }
+
+  .ews-preview-actions{
+
+    flex-direction:column;
+
+  }
+
+  .ews-preview-actions button{
+
+    width:100%;
+
+  }
+
+}
+
+@media(max-width:480px){
+
+  .ews-root{
+
+    padding:16px;
+
+    gap:14px;
+
+  }
+
+  .ews-title-group h2{
+
+    font-size:18px;
+
+  }
+
+  .ews-preview-body{
+
+    max-height:220px;
+    overflow-y:auto;
+
+  }
+
+}
+
+/* ==========================================================
+   Reduced Motion
+========================================================== */
+
+@media(prefers-reduced-motion:reduce){
+
+  *{
+
+    animation:none!important;
+
+    transition:none!important;
+
+    scroll-behavior:auto!important;
+
+  }
+
+}
+
+/* ==========================================================
+   Focus Accessibility
+========================================================== */
+
+button:focus-visible,
+textarea:focus-visible,
+select:focus-visible{
+
+  outline:none;
+
+}
+
+/* ==========================================================
+   Utilities
+========================================================== */
+
+.ews-hidden{
+
+  display:none!important;
+
+}
+
+.ews-center{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+}
+
+.ews-space-between{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+}
+
+.ews-mt{
+
+  margin-top:14px;
+
+}
+
+.ews-mb{
+
+  margin-bottom:14px;
+
+}
+
+
+
+
+/* ==========================================================
+   Primary Button
+========================================================== */
+
+.ews-primary-button{
+
+  width:100%;
+
+}
+
+/* ==========================================================
+   Loader
+========================================================== */
+
+.ews-loader{
+
+  width:16px;
+
+  height:16px;
+
+  border-radius:50%;
+
+  border:2px solid rgba(255,255,255,.25);
+
+  border-top-color:white;
+
+  animation:igris-spin .8s linear infinite;
+
+}
+
+@keyframes igris-spin{
+
+  to{
+
+    transform:rotate(360deg);
+
+  }
+
+}
+
+/* ==========================================================
+   Loading Button
+========================================================== */
+
+.ews-loading .ews-primary-button{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:8px;
+
+}
+
+/* ==========================================================
+   Empty Preview
+========================================================== */
+
+.ews-preview-empty{
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:10px;
+
+  min-height:110px;
+
+  color:var(--muted);
+
+  text-align:center;
+
+}
+
+.ews-preview-empty h3{
+
+  margin:0;
+
+  color:white;
+
+}
+
+.ews-preview-empty p{
+
+  margin:0;
+
+  line-height:1.6;
+
+}
+
+/* ==========================================================
+   Copy Button
+========================================================== */
+
+button[data-ews-copy]{
+
+  background:#2563eb;
+
+}
+
+button[data-ews-copy]:hover{
+
+  background:#1d4ed8;
+
+}
+
+/* ==========================================================
+   Insert Button
+========================================================== */
+
+button[data-ews-insert]{
+
+  background:#16a34a;
+
+}
+
+button[data-ews-insert]:hover{
+
+  background:#15803d;
+
+}
+
+.ews-chip-icon{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+}
+
+.ews-chip-icon svg{
+
+  width:18px;
+
+  height:18px;
+
+  stroke-width:2;
+
+}
+
+/* ===============================
+   Tone Dropdown
+================================*/
+
+.ews-tone-dropdown{
+
+  position:relative;
+
+  width:100%;
+
+  z-index:1;
+
+}
+
+.ews-tone-button{
+
+  width:100%;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:10px 12px;
+
+  border-radius:10px;
+
+  background:rgba(255,255,255,.05);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  color:white;
+
+}
+
+.ews-tone-button:hover{
+
+  border-color:var(--primary);
+
+}
+
+.ews-tone-arrow{
+
+  display:flex;
+
+  align-items:center;
+
+}
+
+.ews-tone-menu{
+
+  position:absolute;
+
+  top:calc(100% + 6px);
+
+  left:0;
+
+  width:100%;
+
+  display:none;
+
+  flex-direction:column;
+
+  background:rgba(21,27,47,.72);
+
+  border-radius:10px;
+
+  overflow:hidden;
+
+  border:1px solid rgba(255,255,255,.08);
+
+  box-shadow:0 12px 32px rgba(0,0,0,.32);
+
+  -webkit-backdrop-filter:blur(14px);
+
+  backdrop-filter:blur(14px);
+
+  z-index:20;
+
+}
+
+.ews-dropdown-portal{
+
+  position:fixed;
+
+  pointer-events:auto;
+
+  z-index:2147483647;
+
+  will-change:transform, opacity;
+
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+
+  .ews-tone-menu{
+
+    background:rgba(21,27,47,.88);
+
+  }
+
+}
+
+.ews-tone-menu.show{
+
+  display:flex;
+
+}
+
+.ews-tone-item{
+
+  padding:10px 12px;
+
+  text-align:left;
+
+  background:transparent;
+
+  border:none;
+
+  color:white;
+
+  transition:.25s;
+
+}
+
+.ews-tone-item:hover{
+
+  background:rgba(124,92,255,.18);
+
+}
+.ews-tone-arrow{
+
+  transition:.25s;
+
+}
+
+.ews-tone-arrow.rotate{
+
+  transform:rotate(180deg);
+
+}
+
+.ews-tone-item.active{
+
+  background:rgba(124,92,255,.18);
+
+  color:white;
+
+}
+/* =====================================
+   Primary Button Icon
+===================================== */
+
+.ews-primary-button{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:10px;
+
+}
+
+.ews-primary-button svg{
+
+  width:18px;
+
+  height:18px;
+
+}
+
+/* =====================================
+   Status
+===================================== */
+
+.ews-status{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  margin-top:4px;
+
+  font-size:12px;
+
+  color:var(--muted);
+
+}
+
+.ews-status-dot{
+
+  width:8px;
+
+  height:8px;
+
+  border-radius:50%;
+
+  background:#22c55e;
+
+  box-shadow:
+
+          0 0 10px #22c55e;
+
+}
+/* ======================================
+   Error Animation
+====================================== */
+
+.ews-error{
+
+  opacity:0;
+
+  transform:translateY(-8px);
+
+  transition:.25s;
+
+}
+
+.ews-error.show{
+
+  opacity:1;
+
+  transform:translateY(0);
+
+}
+
+/* ==========================================
+   Widget Animation
+========================================== */
+
+
+.ews-root.mounted{
+
+  opacity:1;
+
+  transform:none;
+
+}
+
+/* ==========================================
+   Better Button
+========================================== */
+
+.ews-primary-button{
+
+  transition:
+
+          transform .25s,
+
+          box-shadow .25s;
+
+}
+
+.ews-primary-button:hover{
+
+  transform:translateY(-2px);
+
+}
+
+.ews-primary-button:active{
+
+  transform:scale(.98);
+
+}
+
+/* ==========================================
+   Section Animation
+========================================== */
+
+.ews-section{
+
+  animation:fadeUp .45s ease;
+
+}
+
+@keyframes fadeUp{
+
+  from{
+
+    opacity:0;
+
+    transform:translateY(10px);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:none;
+
+  }
+
+}
+/* ===========================================
+   Floating Launcher
+=========================================== */
+
+.ews-launcher{
+
+  position:fixed;
+
+  right:24px;
+
+  bottom:24px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+
+  padding:14px 18px;
+
+  border:none;
+
+  border-radius:18px;
+
+  z-index: 2147483647;
+
+  background:rgba(24,30,48,.92);
+
+  backdrop-filter:blur(18px);
+
+  color:#fff;
+
+  cursor:pointer;
+
+  box-shadow:
+
+          0 12px 35px rgba(0,0,0,.35);
+
+  z-index:2147483647;
+
+  transition:.28s;
+
+}
+
+.ews-launcher:hover{
+
+  transform:translateY(-3px);
+
+  box-shadow:
+
+          0 18px 45px rgba(98,92,255,.35);
+
+}
+
+.ews-launcher svg{
+
+  width:24px;
+
+  height:24px;
+
+}
+
+.ews-launcher-text{
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:flex-start;
+
+}
+
+.ews-launcher-text strong{
+
+  font-size:14px;
+
+}
+
+.ews-launcher-text span {
+
+  font-size: 11px;
+
+  opacity: .7;
+
+}
+
+.ews-close-button{
+
+  position:absolute;
+
+  top:14px;
+
+  right:14px;
+
+  width:38px;
+
+  height:38px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border:none;
+
+  background:transparent;
+
+  color:#fff;
+
+  cursor:pointer;
+
+  border-radius:10px;
+
+  z-index:999999;
+
+  pointer-events:auto;
+
+}
+
+.ews-close-button:hover{
+
+  background:rgba(255,255,255,.08);
+
+}
+
+.ews-root::-webkit-scrollbar{
+
+  width:8px;
+
+}
+
+.ews-root::-webkit-scrollbar-track{
+
+  background:transparent;
+
+}
+
+.ews-root::-webkit-scrollbar-thumb{
+
+  background:rgba(124,92,255,.4);
+
+  border-radius:999px;
+
+}
+
+.ews-root::-webkit-scrollbar-thumb:hover{
+
+  background:rgba(124,92,255,.7);
+
+}
+
+/* ==========================================
+   ACTION DROPDOWN
+========================================== */
+
+.ews-action-dropdown{
+
+  position:relative;
+
+  width:100%;
+  z-index:20;
+
+}
+
+.ews-action-dropdown.dropdown-open,
+.ews-tone-dropdown.dropdown-open{
+
+  z-index:1000;
+
+}
+
+.ews-action-button{
+
+  width:100%;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:12px;
+
+  padding:12px 14px;
+
+  border:1px solid var(--border);
+
+  border-radius:12px;
+
+  background:rgba(255,255,255,.04);
+
+  color:var(--text);
+
+  cursor:pointer;
+
+  transition:all .25s ease;
+
+}
+
+.ews-action-button:hover{
+
+  border-color:var(--primary);
+
+  background:rgba(124,92,255,.08);
+
+}
+
+.ews-action-icon{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+}
+
+.ews-action-value{
+
+  flex:1;
+
+  text-align:left;
+
+  font-weight:600;
+
+}
+
+.ews-action-arrow{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  transition:transform .25s ease;
+
+}
+
+.ews-action-dropdown-menu{
+
+  position:absolute;
+
+  top:calc(100% + 8px);
+
+  left:0;
+
+  width:100%;
+
+  display:none;
+  flex-direction:column;
+  background:rgba(21,27,47,.72);
+
+  border-radius:10px;
+
+  overflow:hidden;
+
+  border:1px solid rgba(255,255,255,.08);
+
+  box-shadow:0 12px 32px rgba(0,0,0,.32);
+
+  -webkit-backdrop-filter:blur(14px);
+
+  backdrop-filter:blur(14px);
+
+  opacity:0;
+
+  transform:translateY(-8px);
+
+  pointer-events:none;
+
+  transition:all .25s ease;
+
+  z-index:20;
+
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+
+  .ews-action-dropdown-menu{
+
+    background:rgba(21,27,47,.88);
+
+  }
+
+}
+
+.ews-action-dropdown-menu.show{
+
+  display:flex;
+  opacity:1;
+
+  transform:translateY(0);
+
+  pointer-events:auto;
+
+}
+
+.ews-action-dropdown-item{
+
+  width:100%;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  padding:10px 12px;
+
+  border:none;
+
+  background:transparent;
+
+  color:white;
+
+  cursor:pointer;
+
+  transition:.25s;
+
+}
+
+.ews-action-dropdown-item:hover{
+
+  background:rgba(124,92,255,.18);
+
+}
+
+.ews-action-dropdown-item svg{
+
+  width:18px;
+
+  height:18px;
+
+}
+
+.ews-action-button.open  .ews-action-arrow{
+
+  transform:rotate(180deg);
+
+}

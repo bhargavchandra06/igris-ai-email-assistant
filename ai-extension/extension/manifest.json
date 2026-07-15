@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "AI Email Assistant",
+  "description": "AI-powered email drafting, replies, grammar fixes, tone changes, subjects, and summaries inside Gmail.",
+  "version": "0.1.0",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://mail.google.com/*",
+    "http://localhost:8080/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "run_at": "document_idle",
+      "css": ["src/styles/gmail-assistant.css"],
+      "js": [
+        "src/vendor/lucide.min.js",
+        "src/utils/constants.js",
+        "src/utils/sanitize.js",
+        "src/utils/debounce.js",
+        "src/api/backend-client.js",
+        "src/content/gmail-dom-adapter.js",
+        "src/content/compose-adapter.js",
+        "src/ui/dropdown-coordinator.js",
+        "src/ui/tone-selector.js",
+        "src/ui/action-menu.js",
+        "src/ui/action-dropdown.js",
+        "src/ui/loading-state.js",
+        "src/ui/preview-panel.js",
+        "src/content/assistant-widget.js",
+        "src/content/gmail-content-script.js"
+      ]
+    }
+  ]
+}
