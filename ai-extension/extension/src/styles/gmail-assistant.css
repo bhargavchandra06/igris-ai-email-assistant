@@ -328,9 +328,11 @@
 
   width:100%;
 
-  min-height:78px;
+  box-sizing:border-box;
 
-  resize:vertical;
+  height:92px;
+
+  resize:none;
 
   padding:10px 12px;
 

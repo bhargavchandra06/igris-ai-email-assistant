@@ -329,7 +329,7 @@
       this.instruction.className =
           "ews-instruction";
 
-      this.instruction.rows = 6;
+      this.instruction.rows = 4;
 
       this.instruction.maxLength = 1000;
 
