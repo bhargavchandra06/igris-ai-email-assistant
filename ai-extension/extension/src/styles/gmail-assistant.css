@@ -46,8 +46,10 @@
 .ews-root{
 
   position:fixed;
-  right:24px;
-  bottom:24px;
+  left:0;
+  top:0;
+  right:auto;
+  bottom:auto;
 
   width:min(380px,calc(100vw - 28px));
 
@@ -1641,7 +1643,11 @@ button[data-ews-insert]:hover{
 
   color:#fff;
 
-  cursor:pointer;
+  cursor:grab;
+
+  touch-action:none;
+
+  user-select:none;
 
   box-shadow:
 
@@ -1649,7 +1655,9 @@ button[data-ews-insert]:hover{
 
   z-index:2147483647;
 
-  transition:.28s;
+  transition:left .2s ease, top .2s ease, transform .28s;
+
+  will-change:left, top, transform;
 
 }
 

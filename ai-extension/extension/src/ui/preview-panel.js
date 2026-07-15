@@ -39,75 +39,13 @@
 
                 </div>
 
-                <div
-                    class="ews-preview-empty"
-                    data-ews-empty>
-
-                    <i data-lucide="bot"></i>
-
-                    <h3>Ready to write</h3>
-
-                    <p>
-
-                        Choose an action and click Generate.
-
-                        Your AI response will appear here.
-
-                    </p>
-
-                </div>
-
-                <div
-                    class="ews-preview-subject"
-                    data-ews-subject
-                    hidden>
-
-                </div>
-
-                <pre
-                    class="ews-preview-body"
-                    data-ews-body
-                    hidden>
-
-                </pre>
-
-                <div
-                    class="ews-preview-warnings"
-                    data-ews-warnings
-                    hidden>
-
-                </div>
-
-                <div
-                    class="ews-preview-actions"
-                    data-ews-actions
-                    hidden>
-
-                    <button
-                        type="button"
-                        data-ews-copy>
-
-                        <i data-lucide="copy"></i>
-
-                        <span>Copy</span>
-
-                    </button>
-
-                    <button
-                        type="button"
-                        data-ews-insert>
-
-                        <i data-lucide="corner-down-left"></i>
-
-                        <span>Insert</span>
-
-                    </button>
-
-                </div>
+                <div data-ews-content></div>
 
             `;
 
       this.cache();
+
+      this.renderEmptyState();
 
       this.bind();
 
@@ -133,23 +71,21 @@
 
     cache(){
 
+      this.content =
+          this.element.querySelector("[data-ews-content]");
+
       this.empty =
-          this.element.querySelector("[data-ews-empty]");
+          null;
 
-      this.subject =
-          this.element.querySelector("[data-ews-subject]");
+      this.subject = null;
 
-      this.body =
-          this.element.querySelector("[data-ews-body]");
+      this.body = null;
 
-      this.warnings =
-          this.element.querySelector("[data-ews-warnings]");
+      this.warnings = null;
 
-      this.actions =
-          this.element.querySelector("[data-ews-actions]");
+      this.actions = null;
 
-      this.copyButton =
-          this.element.querySelector("[data-ews-copy]");
+      this.copyButton = null;
 
     }
 
@@ -160,14 +96,23 @@
           .addEventListener("click",()=>this.hide());
 
       this.element
-          .querySelector("[data-ews-copy]")
-          .addEventListener("click",()=>this.copy());
+          .addEventListener("click", event => {
 
-      this.element
-          .querySelector("[data-ews-insert]")
-          .addEventListener("click",()=>{
+            const copyButton =
+                event.target.closest("[data-ews-copy]");
 
-            if(this.response){
+            if (copyButton) {
+
+              this.copy();
+
+              return;
+
+            }
+
+            const insertButton =
+                event.target.closest("[data-ews-insert]");
+
+            if (insertButton && this.response) {
 
               this.onInsert(this.response);
 
@@ -177,31 +122,176 @@
 
     }
 
+    renderEmptyState() {
+
+      this.content.innerHTML = `
+
+                <div
+                    class="ews-preview-empty"
+                    data-ews-empty>
+
+                    <i data-lucide="bot"></i>
+
+                    <h3>Ready to write</h3>
+
+                    <p>
+
+                        Choose an action and click Generate.
+
+                        Your AI response will appear here.
+
+                    </p>
+
+                </div>
+
+            `;
+
+      this.empty = this.content.querySelector("[data-ews-empty]");
+
+      this.subject = null;
+
+      this.body = null;
+
+      this.warnings = null;
+
+      this.actions = null;
+
+      this.copyButton = null;
+
+      if (window.lucide) {
+
+        window.lucide.createIcons({
+
+          attrs:{
+
+            width:18,
+
+            height:18
+
+          }
+
+        });
+
+      }
+
+    }
+
+    renderResponseState(response) {
+
+      const subjectText =
+          response.subject
+              ? `Subject\n${response.subject}`
+              : "";
+
+      const warningText = Array.isArray(response.warnings)
+          ? response.warnings.join("\n")
+          : "";
+
+      this.content.innerHTML = `
+
+                <div
+                    class="ews-preview-subject"
+                    data-ews-subject
+                    ${response.subject ? "" : "hidden"}>
+
+                </div>
+
+                <pre
+                    class="ews-preview-body"
+                    data-ews-body>
+
+                </pre>
+
+                <div
+                    class="ews-preview-warnings"
+                    data-ews-warnings
+                    ${warningText ? "" : "hidden"}>
+
+                </div>
+
+                <div
+                    class="ews-preview-actions"
+                    data-ews-actions>
+
+                    <button
+                        type="button"
+                        data-ews-copy>
+
+                        <i data-lucide="copy"></i>
+
+                        <span>Copy</span>
+
+                    </button>
+
+                    <button
+                        type="button"
+                        data-ews-insert>
+
+                        <i data-lucide="corner-down-left"></i>
+
+                        <span>Insert</span>
+
+                    </button>
+
+                </div>
+
+            `;
+
+      this.empty = null;
+      this.subject = this.element.querySelector("[data-ews-subject]");
+      this.body = this.element.querySelector("[data-ews-body]");
+      this.warnings = this.element.querySelector("[data-ews-warnings]");
+      this.actions = this.element.querySelector("[data-ews-actions]");
+      this.copyButton = this.element.querySelector("[data-ews-copy]");
+
+      this.subject.textContent = subjectText;
+      this.body.textContent = response.body || "";
+      this.warnings.textContent = warningText;
+
+      if (window.lucide) {
+
+        window.lucide.createIcons({
+
+          attrs:{
+
+            width:18,
+
+            height:18
+
+          }
+
+        });
+
+      }
+
+    }
+
     show(response){
 
-      this.response=response;
+      const normalizedResponse = response || {};
+      const hasContent =
+          Boolean(
+              (normalizedResponse.body &&
+                  String(normalizedResponse.body).trim()) ||
+              (normalizedResponse.subject &&
+                  String(normalizedResponse.subject).trim()) ||
+              (Array.isArray(normalizedResponse.warnings) &&
+                  normalizedResponse.warnings.some(
+                      warning => String(warning || "").trim()
+                  ))
+          );
 
-      this.empty.hidden=true;
+      this.response = hasContent ? normalizedResponse : null;
 
-      this.actions.hidden=false;
+      if (!hasContent) {
 
-      this.subject.hidden=!response.subject;
+        this.renderEmptyState();
 
-      this.subject.textContent=response.subject
-          ?`Subject\n${response.subject}`
-          :"";
+        return;
 
-      this.body.hidden=false;
+      }
 
-      this.body.textContent=response.body||"";
-
-      const warningText=Array.isArray(response.warnings)
-          ?response.warnings.join("\n")
-          :"";
-
-      this.warnings.hidden=!warningText;
-
-      this.warnings.textContent=warningText;
+      this.renderResponseState(normalizedResponse);
 
     }
 
@@ -250,16 +340,7 @@
     hide(){
 
       this.response=null;
-
-      this.empty.hidden=false;
-
-      this.subject.hidden=true;
-
-      this.body.hidden=true;
-
-      this.warnings.hidden=true;
-
-      this.actions.hidden=true;
+      this.renderEmptyState();
 
     }
 

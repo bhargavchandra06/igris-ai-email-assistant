@@ -31,6 +31,13 @@
 
       this.launcher = null;
       this.isCollapsed = true;
+      this.launcherState = null;
+      this.launcherDragging = false;
+      this.launcherDragMoved = false;
+      this.launcherDragThreshold = 5;
+      this.launcherPositionKey = "igrisLauncherPosition";
+      this.launcherPointerOffset = { x: 0, y: 0 };
+      this.launcherSize = { width: 0, height: 0 };
 
     }
     mount() {
@@ -56,6 +63,7 @@
       document.documentElement.appendChild(this.root);
 
       this.createLauncher();
+      this.restoreLauncherPosition();
 
       this.loadingState =
           new global.EmailAssistantLoadingState(this.root);
@@ -63,6 +71,318 @@
       this.registerEvents();
 
       this.setStatus("Ready", true);
+
+    }
+
+    async restoreLauncherPosition() {
+
+      if (!this.launcher) {
+        return;
+      }
+
+      const defaultPosition = {
+
+        x: window.innerWidth - this.launcher.offsetWidth - 24,
+        y: window.innerHeight - this.launcher.offsetHeight - 24,
+
+      };
+
+      let savedPosition = null;
+
+      try {
+
+        const result = await chrome.storage.local.get(
+            this.launcherPositionKey
+        );
+
+        savedPosition = result[this.launcherPositionKey] || null;
+
+      } catch (error) {
+
+        savedPosition = null;
+
+      }
+
+      const position = this.clampToViewport(
+          savedPosition || defaultPosition,
+          this.launcher.offsetWidth,
+          this.launcher.offsetHeight
+      );
+
+      this.setLauncherPosition(position.x, position.y);
+
+    }
+
+    async saveLauncherPosition(position) {
+
+      if (!position) {
+        return;
+      }
+
+      try {
+
+        await chrome.storage.local.set({
+
+          [this.launcherPositionKey]: position
+
+        });
+
+      } catch (error) {
+
+        console.error("[IGRIS]", error);
+
+      }
+
+    }
+
+    clampToViewport(position, width, height) {
+
+      const margin = 12;
+      const maxX = Math.max(margin, window.innerWidth - width - margin);
+      const maxY = Math.max(margin, window.innerHeight - height - margin);
+
+      return {
+
+        x: Math.min(maxX, Math.max(margin, position.x)),
+        y: Math.min(maxY, Math.max(margin, position.y)),
+
+      };
+
+    }
+
+    setLauncherPosition(x, y, animate = false) {
+
+      if (!this.launcher) {
+        return;
+      }
+
+      this.launcher.style.left = `${Math.round(x)}px`;
+      this.launcher.style.top = `${Math.round(y)}px`;
+      this.launcher.style.right = "auto";
+      this.launcher.style.bottom = "auto";
+      this.launcher.style.transition = animate ? ".2s ease" : "none";
+
+    }
+
+    snapLauncherPosition(position) {
+
+      const margin = 12;
+      const snapThreshold = 24;
+      const width = this.launcher.offsetWidth;
+      const height = this.launcher.offsetHeight;
+      const maxX = Math.max(margin, window.innerWidth - width - margin);
+      const maxY = Math.max(margin, window.innerHeight - height - margin);
+
+      let nextX = position.x;
+      let nextY = position.y;
+
+      if (nextX <= margin + snapThreshold) {
+        nextX = margin;
+      } else if (maxX - nextX <= snapThreshold) {
+        nextX = maxX;
+      }
+
+      if (nextY <= margin + snapThreshold) {
+        nextY = margin;
+      } else if (maxY - nextY <= snapThreshold) {
+        nextY = maxY;
+      }
+
+      return this.clampToViewport({ x: nextX, y: nextY }, width, height);
+
+    }
+
+    calculateBestPanelPosition() {
+
+      const launcherRect = this.launcher.getBoundingClientRect();
+      const panelRect = this.root.getBoundingClientRect();
+      const margin = 12;
+      const gap = 14;
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      const spaceLeft = launcherRect.left - margin;
+      const spaceRight = viewportWidth - launcherRect.right - margin;
+      const spaceAbove = launcherRect.top - margin;
+      const spaceBelow = viewportHeight - launcherRect.bottom - margin;
+
+      let x;
+      if (spaceRight >= panelRect.width + gap) {
+        x = launcherRect.right + gap;
+      } else if (spaceLeft >= panelRect.width + gap) {
+        x = launcherRect.left - panelRect.width - gap;
+      } else {
+        x = spaceRight >= spaceLeft
+            ? launcherRect.right + gap
+            : launcherRect.left - panelRect.width - gap;
+      }
+
+      let y;
+      if (spaceBelow >= panelRect.height + gap) {
+        y = launcherRect.bottom + gap;
+      } else if (spaceAbove >= panelRect.height + gap) {
+        y = launcherRect.top - panelRect.height - gap;
+      } else {
+        y = spaceBelow >= spaceAbove
+            ? launcherRect.bottom + gap
+            : launcherRect.top - panelRect.height - gap;
+      }
+
+      const clampedX = Math.min(
+          viewportWidth - panelRect.width - margin,
+          Math.max(margin, x)
+      );
+      const clampedY = Math.min(
+          viewportHeight - panelRect.height - margin,
+          Math.max(margin, y)
+      );
+
+      return {
+        x: clampedX,
+        y: clampedY,
+      };
+
+    }
+
+    setPanelPositionFromLauncher() {
+
+      if (!this.root || !this.launcher) {
+        return;
+      }
+
+      const position = this.calculateBestPanelPosition();
+
+      this.root.style.left = `${Math.round(position.x)}px`;
+      this.root.style.top = `${Math.round(position.y)}px`;
+      this.root.style.right = "auto";
+      this.root.style.bottom = "auto";
+      this.root.style.transformOrigin = "bottom left";
+
+      console.log("[IGRIS] panel inline left:", this.root.style.left);
+      console.log("[IGRIS] panel inline top:", this.root.style.top);
+      console.log(
+          "[IGRIS] panel computed style:",
+          {
+            left: getComputedStyle(this.root).left,
+            top: getComputedStyle(this.root).top,
+            right: getComputedStyle(this.root).right,
+            bottom: getComputedStyle(this.root).bottom,
+            transform: getComputedStyle(this.root).transform,
+            position: getComputedStyle(this.root).position,
+          }
+      );
+
+      return position;
+
+    }
+
+    beginLauncherDrag(event) {
+
+      const rect = this.launcher.getBoundingClientRect();
+
+      this.launcherDragging = true;
+      this.launcherDragMoved = false;
+      this.launcherState = {
+
+        startX: event.clientX,
+        startY: event.clientY,
+
+      };
+      this.launcherPointerOffset = {
+
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+
+      };
+
+      this.launcherSize = {
+
+        width: rect.width,
+        height: rect.height,
+
+      };
+
+      this.launcher.style.cursor = "grabbing";
+      document.body.style.userSelect = "none";
+
+      this.launcher.setPointerCapture(event.pointerId);
+      event.preventDefault();
+
+    }
+
+    moveLauncher(event) {
+
+      if (!this.launcherDragging) {
+        return;
+      }
+
+      const movedDistance = Math.hypot(
+          event.clientX - this.launcherState.startX,
+          event.clientY - this.launcherState.startY
+      );
+
+      if (!this.launcherDragMoved && movedDistance < this.launcherDragThreshold) {
+        return;
+      }
+
+      this.launcherDragMoved = true;
+
+      const nextPosition = this.clampToViewport(
+          {
+            x: event.clientX - this.launcherPointerOffset.x,
+            y: event.clientY - this.launcherPointerOffset.y,
+          },
+          this.launcherSize.width,
+          this.launcherSize.height
+      );
+
+      const current = this.launcher.getBoundingClientRect();
+      const deltaX = Math.abs(nextPosition.x - current.left);
+      const deltaY = Math.abs(nextPosition.y - current.top);
+
+      if (deltaX > 2 || deltaY > 2) {
+        this.launcherDragMoved = true;
+      }
+
+      this.setLauncherPosition(nextPosition.x, nextPosition.y);
+
+    }
+
+    async endLauncherDrag(event) {
+
+      if (!this.launcherDragging) {
+        return;
+      }
+
+      this.launcherDragging = false;
+      this.launcherState = null;
+      this.launcher.style.cursor = "pointer";
+      document.body.style.userSelect = "";
+
+      try {
+
+        this.launcher.releasePointerCapture(event.pointerId);
+
+      } catch (error) {
+
+        // Pointer capture may already be released.
+
+      }
+
+      const rect = this.launcher.getBoundingClientRect();
+      const snapped = this.snapLauncherPosition({
+
+        x: rect.left,
+        y: rect.top,
+
+      });
+
+      this.setLauncherPosition(snapped.x, snapped.y, true);
+      await this.saveLauncherPosition(snapped);
+
+      if (this.launcherDragMoved) {
+        // Drag completed; click handler will suppress opening.
+      }
 
     }
 
@@ -88,6 +408,8 @@
 
     `;
 
+      this.launcher.dataset.ewsLauncher = "true";
+
       document.documentElement.appendChild(
           this.launcher
       );
@@ -105,17 +427,66 @@
 
       }
 
+      this.launcher.addEventListener(
+          "pointerdown",
+          event => this.beginLauncherDrag(event)
+      );
+
+      this.launcher.addEventListener(
+          "pointermove",
+          event => this.moveLauncher(event)
+      );
+
+      this.launcher.addEventListener(
+          "pointerup",
+          event => this.endLauncherDrag(event)
+      );
+
+      this.launcher.addEventListener(
+          "pointercancel",
+          event => this.endLauncherDrag(event)
+      );
+
+      this.launcher.addEventListener(
+          "click",
+          event => {
+
+            if (this.launcherDragMoved) {
+
+              event.preventDefault();
+              event.stopImmediatePropagation();
+              this.launcherDragMoved = false;
+
+              return;
+
+            }
+
+            this.toggleWidget();
+
+          }
+      );
+
     }
 
     toggleWidget() {
 
       if (this.root.style.display === "none") {
 
-        this.launcher.style.display = "none";
-
         this.root.style.display = "flex";
+        this.root.style.visibility = "hidden";
 
         requestAnimationFrame(() => {
+
+          const position = this.setPanelPositionFromLauncher();
+
+          if (position) {
+
+            this.root.style.left = `${Math.round(position.x)}px`;
+            this.root.style.top = `${Math.round(position.y)}px`;
+
+          }
+
+          this.root.style.visibility = "";
 
           this.root.classList.add("mounted");
 
@@ -128,8 +499,7 @@
         setTimeout(() => {
 
           this.root.style.display = "none";
-
-          this.launcher.style.display = "flex";
+          this.launcher.style.transition = "";
 
         }, 250);
 
@@ -429,6 +799,7 @@ Examples
           "ews-error";
 
       this.error.hidden = true;
+      this.error.style.display = "none";
 
       this.error.setAttribute(
           "role",
@@ -481,14 +852,6 @@ Examples
       /* ----------------------------------
          Action Menu
       ----------------------------------- */
-
-      this.launcher.addEventListener(
-
-          "click",
-
-          () => this.toggleWidget()
-
-      );
 
       this.actionMenu.addEventListener(
 
@@ -969,6 +1332,7 @@ Examples
       this.error.textContent = message;
 
       this.error.hidden = false;
+      this.error.style.display = "flex";
 
       this.error.classList.add("show");
 
@@ -977,6 +1341,7 @@ Examples
         this.error.classList.remove("show");
 
         this.error.hidden = true;
+        this.error.style.display = "none";
 
       }, 5000);
 
