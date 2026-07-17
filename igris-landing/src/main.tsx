@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import "./styles.css";
 
-createRoot(document.getElementById("root")!).render(
+createRoot(document.getElementById("root")!).render( // hi is to test ci/cd
   <StrictMode>
     <BrowserRouter>
       <Routes>
