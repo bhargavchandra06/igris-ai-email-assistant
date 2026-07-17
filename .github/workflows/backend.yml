@@ -45,3 +45,20 @@ jobs:
       - name: Push SHA Tag
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/igris-backend:${SHA_TAG}
+          - name: Deploy to EC2
+            uses: appleboy/ssh-action@v1.2.0
+            with:
+              host: ${{ secrets.EC2_HOST }}
+              username: ${{ secrets.EC2_USERNAME }}
+              key: ${{ secrets.EC2_SSH_KEY }}
+              script: |
+                docker pull ${{ secrets.DOCKER_USERNAME }}/igris-backend:latest
+          
+                docker stop igris-backend || true
+                docker rm igris-backend || true
+          
+                docker run -d \
+                  --name igris-backend \
+                  --restart unless-stopped \
+                  -p 8080:8080 \
+                  ${{ secrets.DOCKER_USERNAME }}/igris-backend:latest

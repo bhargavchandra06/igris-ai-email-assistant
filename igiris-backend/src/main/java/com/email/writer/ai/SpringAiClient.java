@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Primary
-public class SpringAiClient implements EmailAiClient {
+public class SpringAiClient implements EmailAiClient { // to test ec2 deployment
 
 	private final ChatClient chatClient;
 
