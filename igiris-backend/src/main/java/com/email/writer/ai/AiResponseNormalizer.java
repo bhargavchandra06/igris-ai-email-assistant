@@ -12,7 +12,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AiResponseNormalizer {
+public class AiResponseNormalizer { // To test deploy
 
 	private final ObjectMapper objectMapper;
 
