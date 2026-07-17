@@ -4,7 +4,7 @@ import com.email.writer.exception.AiProviderException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UnavailableEmailAiClient implements EmailAiClient {
+public class UnavailableEmailAiClient implements EmailAiClient {//automate ec2 deployment
 
 	@Override
 	public String generate(String prompt) {
