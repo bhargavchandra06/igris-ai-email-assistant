@@ -1,4 +1,4 @@
-const BACKEND_BASE_URL = "http://16.112.222.190:8080";
+const BACKEND_BASE_URL = "https://api.igrisai.cloud";
 
 const ENDPOINTS = {
   generate: "/api/v1/email/generate",
