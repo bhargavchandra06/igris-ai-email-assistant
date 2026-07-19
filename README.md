@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://igrisai.cloud"><strong>🌐 Website</strong></a> •
-  <a href="https://youtu.be/TdSvI6ZfRUI?si=45K7Z2oKfObiq0SQ"><strong>🎥 Demo</strong></a> •
+  <a href="https://drive.google.com/file/d/19Ru8BNK33kHOkvqHOlJNlRIhSJF7r-XO/view?usp=drivesdk"><strong>🎥 Demo</strong></a> •
 </p>
 
 <p align="center">
