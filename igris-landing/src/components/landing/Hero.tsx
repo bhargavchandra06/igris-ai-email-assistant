@@ -237,7 +237,7 @@ export function Hero() {
               </span>
             </a>
             <a
-              href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+              href="https://youtu.be/TdSvI6ZfRUI?si=45K7Z2oKfObiq0SQ"
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-4 text-sm font-semibold text-white/90 backdrop-blur transition-colors hover:border-white/30 hover:bg-white/[0.06] sm:w-auto sm:py-3"
