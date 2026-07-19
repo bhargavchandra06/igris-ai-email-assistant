@@ -120,14 +120,19 @@ Igris AI follows a layered architecture that separates the user interface, backe
 
 The High-Level Design illustrates the primary components of Igris AI and how they interact to process user requests. The Chrome Extension acts as the client interface, the Spring Boot application handles business logic and AI orchestration, and Google's Gemini API performs intelligent text generation.
 
-![img.png](docs/img.png)
+![img_1.png](docs/img_1.png)
 
 #### Workflow
 
-1. The user interacts with the Chrome Extension inside the browser.
-2. The extension sends the email content to the Spring Boot backend through REST APIs.
-3. The backend validates the request and prepares an optimized prompt.
-4. The backend communicates with Google's Gemini API to generate AI-powered responses.
-5. The generated result is returned to the backend.
-6. The backend sends the response back to the Chrome Extension.
-7. The extension displays the AI-generated content directly within the user's email interface.
+1. The user interacts with the **Igris AI Chrome Extension** directly from the browser.
+
+2. When an AI feature such as email summarization or reply generation is requested, the extension sends the email content to the **Spring Boot REST API** over a secure HTTPS connection.
+
+3. The backend validates the request, applies the necessary business rules, and prepares an optimized prompt for the AI model.
+
+4. The Prompt Builder sends the processed prompt to the **Google Gemini API**, which generates a context-aware response.
+
+5. The AI-generated response is returned to the backend, where it is processed and formatted into a structured JSON response.
+
+6. The Chrome Extension receives the response and displays the generated summary or email reply directly within the user's inbox, providing a seamless user experience without requiring users to leave their email client.
+
