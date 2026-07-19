@@ -23,7 +23,6 @@
 ## 1 Table of Contents
 
 - Project Overview
-- Demo
 - Problem Statement
 - Solution
 - Features
