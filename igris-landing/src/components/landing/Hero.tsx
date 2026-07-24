@@ -236,8 +236,8 @@ export function Hero() {
                 Download IGRIS
               </span>
             </a>
-            <a //https://drive.google.com/file/d/19Ru8BNK33kHOkvqHOlJNlRIhSJF7r-XO/view?usp=drivesdk
-              href="https://youtu.be/DEsAc_NP1DM?si=-8UAzjDOY7DrPFrb"
+            <a
+              href="https://drive.google.com/file/d/19Ru8BNK33kHOkvqHOlJNlRIhSJF7r-XO/view?usp=drivesdk"
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-4 text-sm font-semibold text-white/90 backdrop-blur transition-colors hover:border-white/30 hover:bg-white/[0.06] sm:w-auto sm:py-3"
